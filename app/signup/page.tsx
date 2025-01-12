@@ -7,52 +7,39 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "../context/AuthContext";
-import { adminLogin, login } from "@/lib/api";
+import { Signup } from "@/lib/api";
 import { Loader } from "@/components/ui/loader";
 import { EyeOpenIcon, EyeClosedIcon } from "@radix-ui/react-icons";
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const {
-    isAdminAuthenticated,
-    isAuthenticated,
-    setIsAdminAuthenticated,
-    setIsAuthenticated,
-  } = useAuth();
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
     setIsLoading(true);
+
     try {
-      if (isAdmin) {
-        const response = await adminLogin({ email, password });
-        if (response.status == 200) {
-          setIsAdminAuthenticated(true);
-          localStorage.setItem("auth", response.data.token);
-          router.push("/admin");
-        } else {
-          alert(response.data.message);
-        }
+      const response = await Signup({ email, password }); // Removed name from registration
+      if (response.status === 200) {
+        router.push("/login");
       } else {
-        const response = await login({ email, password });
-        console.log(response);
-        if (response.status == 200) {
-          setIsAuthenticated(true);
-          localStorage.setItem("auth", response.data.token);
-          router.push("/menu");
-        } else {
-          alert(response.data.message);
-        }
+        alert(response.data.message);
       }
     } catch (error) {
-      console.error(error);
-      alert("Please try again");
+      console.error("Registration failed:", error);
+      alert("Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -65,17 +52,15 @@ export default function LoginPage() {
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center gap-4">
       <Card className="w-full max-w-md p-6 space-y-8">
-        <h1 className="text-2xl font-bold text-center">Login</h1>
-        <form onSubmit={handleLogin} className="space-y-6">
+        <h1 className="text-2xl font-bold text-center">Sign Up</h1>
+        <form onSubmit={handleSignup} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               placeholder="Enter your email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -86,9 +71,7 @@ export default function LoginPage() {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <Button
@@ -103,24 +86,37 @@ export default function LoginPage() {
               </Button>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="isAdmin"
-              checked={isAdmin}
-              onChange={(e) => setIsAdmin(e.target.checked)}
-            />
-            <Label htmlFor="isAdmin">Login as Admin</Label>
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm your password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <Button
+                variant="ghost"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowConfirmPassword(!showConfirmPassword);
+                }}
+              >
+                {showConfirmPassword ? <EyeClosedIcon /> : <EyeOpenIcon />}
+              </Button>
+            </div>
           </div>
           <Button type="submit" className="w-full">
-            Login
+            Sign Up
           </Button>
         </form>
         <div className="text-center">
           <p>
-            Don't have an account ?{" "}
-            <Link href="/signup" className="text-blue-500">
-              Sign up
+            Already have an account?{" "}
+            <Link href="/login" className="text-blue-500">
+              Login
             </Link>
           </p>
         </div>

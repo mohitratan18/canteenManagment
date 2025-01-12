@@ -84,7 +84,7 @@ export default function MenuPage() {
 
 
   useEffect(() => {
-    if (!localStorage.getItem("auth")?.trim() && isAuthenticated ) {
+    if (!localStorage.getItem("auth")?.trim() || !isAuthenticated ) {
       router.push("/login");
     }
   }, []);

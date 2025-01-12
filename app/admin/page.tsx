@@ -2,12 +2,17 @@
 
 import SalesChart from "@/components/SalesChart";
 import { Card } from "@/components/ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
+
 
 export default function AdminDashboard() {
   const [todaySales] = useState(2450);
   const [monthlySales] = useState(45670);
   const [totalOrders] = useState(28);
+  const {isAdminAuthenticated} = useAuth();
+  const router = useRouter();
 
   const salesData = [
     { date: "1-10-2025", sales: "5200" },
@@ -17,7 +22,12 @@ export default function AdminDashboard() {
     { date: "1-14-2025", sales: "6700" },
     { date: "1-15-2025", sales: "5200" },
   ];
-
+  useEffect(() => {
+    if(!localStorage.getItem("auth")?.trim() || !isAdminAuthenticated ){
+      router.push("/login");
+    }
+  }, [])
+  
   return (
     <div className="space-y-6 flex flex-col w-full items-center gap-6">
       <h1 className="text-3xl font-bold">Admin Dashboard</h1>
