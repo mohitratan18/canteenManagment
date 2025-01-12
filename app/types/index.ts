@@ -1,0 +1,44 @@
+export interface MenuItem {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  isAvailable: boolean;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: {
+    menuItemId: string;
+    quantity: number;
+    price: number;
+  }[];
+  total: number;
+  status: 'pending' | 'completed' | 'cancelled';
+  tokenNumber: string;
+  createdAt: Date;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'user' | 'faculty';
+}
+
+export interface BillItem {
+  menuItemId: string;
+  name: string;
+  quantity: number;
+  price: number;
+}
+
+export interface Bill {
+  id: string;
+  items: BillItem[];
+  total: number;
+  createdAt: Date; 
+}
