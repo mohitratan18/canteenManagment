@@ -1,3 +1,4 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -20,70 +21,61 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
-        "amber-500": "#facc15",
-        "orange-500": "#fb923c",
-        "red-500": "#f87171",
-        "violet-500": "#a78bfa",
-        "blue-500": "#60a5fa",
-        "emerald-500": "#34d399",
-        danger: "#FF3B3F",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+
+        background: "#F4EEFF", // Lightest color for background
+        foreground: "#424874", // Darkest color for text and foreground elements
+
+        // ... other existing colors
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "#DCD6F7",    // Second lightest color for card backgrounds
+          foreground: "#424874", // Darkest color for text on cards
         },
+        //For popover background and foreground colors, you should choose appropriate shades for contrast and visibility. For example:
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
+          DEFAULT: "#A6B1E1",    // A good in-between shade for popovers
+          foreground: "#424874", // Darkest for text on popovers
+         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#A6B1E1",          // Use a color that works well with the new palette
+          foreground: "#424874",      // Ensure good contrast
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
+          DEFAULT: "#DCD6F7",      // Adjust as needed
+          foreground: "#424874",   
+        }, 
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#A6B1E1",      // Adjust as needed for a "muted" feel   
+          foreground: "#424874",     
         },
+
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#8b5cf6",         // Purple accent
+          foreground: "#ffffff",     // White text on accent
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#ef4444",     // Red destructive color
+          foreground: "#ffffff",   // White text on destructive
         },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        chart: {
+        border: "#4b5563",         // Border color
+        input: "#374151",           // Input background color
+        ring: "#2563eb",            // Ring color
+        chart: {                // You'll want to define chart colors as needed
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
           "3": "hsl(var(--chart-3))",
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {

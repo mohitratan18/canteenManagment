@@ -115,7 +115,7 @@ export default function MenuPage() {
 
   const handleDecrementItem = (id: string) => {
     const updatedCart = cartItems.map((item) => {
-      if (item.id === id && item.quantity > 0) {
+      if (item.id === id && item.quantity > 1) {
         return { ...item, quantity: item.quantity - 1 };
       }
       return item;
@@ -133,7 +133,7 @@ export default function MenuPage() {
         {menuItems
           .filter((item) => item.isAvailable)
           .map((item) => (
-            <Card key={item.id} className="overflow-hidden">
+            <Card key={item.id} className="overflow-hidden transition-all ease-in-out border-0 hover:border hover:border-solid">
               <img
                 src={item.image}
                 alt={item.name}

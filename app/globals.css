@@ -80,3 +80,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+.no-hover:hover {
+  transform: none; /* Prevents any hover scaling */
+  box-shadow: none;  /* Removes any hover shadow changes */
+}
+

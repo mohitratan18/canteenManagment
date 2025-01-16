@@ -63,8 +63,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center gap-4">
-      <Card className="w-full max-w-md p-6 space-y-8">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]">
+      <div className="flex flex-col items-center justify-center mb-8">
+        <img
+          src="https://vignan.ac.in/newvignan/assets/images/Logo%20with%20Deemed.svg"
+          className="w-[500px] h-[100px]"
+        />
+      </div>
+      <Card className="w-full max-w-md p-8 space-y-8 no-hover !important">
+        {" "}
+        {/* Added no-hover class */}
         <h1 className="text-2xl font-bold text-center">Login</h1>
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">

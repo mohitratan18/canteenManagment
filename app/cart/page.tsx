@@ -38,10 +38,10 @@ const page = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
+      <h1 className="text-3xl font-bold mb-4 text-[#191a29]">Your Cart</h1>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className='text-[#191a29]'>Your cart is empty.</p>
       ) : (
         cartItems.map((item) => (
           <Card key={item.id} className="border rounded-lg p-4 mb-4 shadow-md">
@@ -51,7 +51,7 @@ const page = () => {
             </div>
            <div className="flex justify-between items-center gap-4 mt-2"> {/* Added margin-top */}
                 <div>
-                  <p className="text-white">Quantity:</p>
+                  <p className="text-[#191a29]">Quantity:</p>
                 </div>
                 <div className="flex items-center gap-2"> {/* Wrap quantity controls in flex */}
                   <button
@@ -69,11 +69,11 @@ const page = () => {
                   </button>
                   </div>
             </div>
-            <p className="text-white font-medium mt-2">
+            <p className="text-[#191a29]font-medium mt-2">
               {/* Added margin-top */}
               Subtotal: ₹{item.quantity * item.price}
             </p>
-            <Button onClick={() => handleRemoveItem(item.id)} className="mt-4 w-full bg-danger hover:opacity-90 text-white">
+            <Button onClick={() => handleRemoveItem(item.id)} className="mt-4 w-full bg-danger hover:opacity-90 text-[#191a29] bg-accent text-accent-foreground">
               Remove
             </Button>
           </Card>
@@ -81,10 +81,13 @@ const page = () => {
       )}
 
       {cartItems.length > 0 && (
-        <div className="border-t pt-4 mt-4">
+        <div className="border-t pt-4 mt-4 flex items-center justify-end gap-4">
           <div className="flex justify-end">
             <p className="text-xl font-bold">Total: ₹{totalPrice}</p>
           </div>
+          <Button className='bg-destructive/90 text-white hover:text-black'>
+          Proceed To Pay
+          </Button>
         </div>
       )}
     </div>
