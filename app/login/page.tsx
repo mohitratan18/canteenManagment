@@ -45,6 +45,7 @@ export default function LoginPage() {
         if (response.status == 200) {
           setIsAuthenticated(true);
           localStorage.setItem("auth", response.data.token);
+          localStorage.setItem("role","ADMIN");
           router.push("/menu");
         } else {
           alert(response.data.message);
@@ -101,6 +102,7 @@ export default function LoginPage() {
               />
               <Button
                 variant="ghost"
+                type="button"
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2"
                 onClick={(e) => {
                   e.preventDefault();

@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/AuthContext";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { Loader } from "@/components/ui/loader";
 
 const dummyMenuItems: MenuItem[] = [
   {
@@ -80,16 +81,19 @@ const dummyMenuItems: MenuItem[] = [
 export default function MenuPage() {
   const [menuItems] = useState(dummyMenuItems);
   const router = useRouter();
-  const { cartItems, setCartItems ,isAuthenticated} = useAuth();
-
+  const { cartItems, setCartItems, isAuthenticated, setIsAuthenticated , setIsLoading , isLoading} =
+    useAuth();
 
   useEffect(() => {
-    if (!localStorage.getItem("auth")?.trim() || !isAuthenticated ) {
+    setIsLoading(true);
+    if (!localStorage.getItem("auth")?.trim()) {
       router.push("/login");
-    }
+    } else setIsAuthenticated(true);
+
+    setIsLoading(false);
   }, []);
 
-  const handleAddItem = (id: string, name: string , price:number) => {
+  const handleAddItem = (id: string, name: string, price: number) => {
     const existingItem = cartItems.find((item) => item.id === id);
     if (existingItem) {
       const updatedCart = cartItems.map((item) =>
@@ -97,7 +101,7 @@ export default function MenuPage() {
       );
       setCartItems(updatedCart);
     } else {
-      setCartItems([...cartItems, { id, name, quantity: 1,price }]);
+      setCartItems([...cartItems, { id, name, quantity: 1, price }]);
     }
   };
 
@@ -126,6 +130,10 @@ export default function MenuPage() {
   const checkIfPresent = (id: string) => {
     return cartItems.some((item) => item.id === id);
   };
+
+  if(isLoading){
+    return <Loader/>
+  }
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Our Menu</h1>
@@ -133,7 +141,10 @@ export default function MenuPage() {
         {menuItems
           .filter((item) => item.isAvailable)
           .map((item) => (
-            <Card key={item.id} className="overflow-hidden transition-all ease-in-out border-0 hover:border hover:border-solid">
+            <Card
+              key={item.id}
+              className="overflow-hidden transition-all ease-in-out border-0 hover:border hover:border-solid"
+            >
               <img
                 src={item.image}
                 alt={item.name}
@@ -186,7 +197,7 @@ export default function MenuPage() {
                   <Button
                     className="w-full"
                     onClick={() => {
-                      handleAddItem(item.id, item.name ,item.price);
+                      handleAddItem(item.id, item.name, item.price);
                     }}
                   >
                     Add to Order

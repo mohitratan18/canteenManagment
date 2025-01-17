@@ -26,6 +26,8 @@ interface AuthContextType {
   setIsAuthenticated: (value: boolean) => void;
   isAdminAuthenticated: boolean;
   setIsAdminAuthenticated: (value: boolean) => void;
+  isLoading:boolean;
+  setIsLoading: (value: boolean) => void;
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -36,6 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [cartItems, setCartItems] = useState<Item[] | []>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [bill, setBill] = useState<Bill | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const addToBill = (item: BillItem) => {
     setBill((prevBill) => {
       if (!prevBill) {
@@ -100,6 +103,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  useEffect(() => {
+    const auth = (localStorage.getItem("auth"));
+    if (auth?.trim()) {
+        setIsAuthenticated(true);
+        if (localStorage.getItem("role") === "ADMIN") {
+            setIsAdminAuthenticated(true);
+        }
+    }
+    setIsLoading(false); // Set loading to false after checking auth
+
+     // Redirect moved into Navbar component
+}, [isAdminAuthenticated, isAuthenticated, router]);
+
   const contextValue: AuthContextType = {
     isAuthenticated,
     setIsAuthenticated,
@@ -114,6 +130,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     removeFromBill,
     isAdminAuthenticated,
     setIsAdminAuthenticated,
+    isLoading,
+    setIsLoading,
   };
 
   return (
