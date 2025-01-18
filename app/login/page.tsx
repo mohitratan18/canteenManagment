@@ -67,7 +67,7 @@ export default function LoginPage() {
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)]">
       <div className="flex flex-col items-center justify-center mb-8">
         <img
-          src="https://vignan.ac.in/newvignan/assets/images/Logo%20with%20Deemed.svg"
+          src="https://media.licdn.com/dms/image/v2/C561BAQGBuYc_zqhKpw/company-background_10000/company-background_10000/0/1648874612968/viitvizag_cover?e=2147483647&v=beta&t=obAVvP8BszPR6WxhP6dRoaedvgoNyX_0qCAgFbS5ScE"
           className="w-[500px] h-[100px]"
         />
       </div>

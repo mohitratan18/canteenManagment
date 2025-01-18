@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 import { AuthProvider } from "./context/AuthContext";
+import Footer from "@/components/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,8 @@ export default function RootLayout({
           <Providers>
             <div className="min-h-screen bg-background">
               {<Navbar />}
-              <main className="container mx-auto px-4 py-6">{children}</main>
+              <main className="container mx-auto px-4 py-6 min-h-[80vh]">{children}</main>
+              <div className="bottom-0">{<Footer />}</div>
             </div>
           </Providers>
         </AuthProvider>

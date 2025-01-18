@@ -1,9 +1,29 @@
+"use client"
 import Image from "next/image";
 // import navbar from '../components/navbar';
 import Link from "next/link";
 import puri from "../public/images/puri.png";
+import { useEffect, useState } from "react";
+
+const images = [
+  "https://i.ibb.co/mc9qq8N/puri-removebg-preview.png",
+  "https://i.ibb.co/6sL9m7q/idli-removebg-preview.png", // Example image URLs
+  "https://i.ibb.co/YjjFxKt/bonda-removebg-preview.png", 
+  "https://i.ibb.co/qBCjGSk/dosa-removebg-preview.png", // Add more as needed
+  // ... more image URLs
+];
+
 
 export default function Home() {
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(intervalId); // Clear interval on component unmount
+  }, []);
   return (
     <>
       <div className=" flex-col lg:flex lg:flex-row items-center justify-center mt-[100px] py-2">
@@ -26,42 +46,17 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="mt-8 sm:flex sm:justify-center">
-          <Image
-            src="https://i.ibb.co/mc9qq8N/puri-removebg-preview.png"
-            alt="Indian Thali"
-            width={500}
-            height={500}
-            className="rounded-lg mb-2" // Add some styling
-            priority // Optional: prioritize loading this image
-          />
-        </div>
+        <div className="mt-8 sm:flex sm:justify-center md:w-[600px] md:h-[500px] ">
+        <Image
+          src={images[currentImageIndex]}
+          alt={`Food Item ${currentImageIndex + 1}`}
+          width={500}
+          height={500}
+          className="rounded-lg mb-2"
+          priority
+        />
       </div>
-
-      <footer className="border-t mt-8">
-        {/* Full-width container */}
-        <div className="px-4 py-6 sm:py-8 md:py-12 w-full mx-auto">  {/* Removed max-w restriction */}
-            <div className="container mx-auto"> {/* Inner container for content */}
-              <div className="grid sm:flex sm:flex-row justify-between items-center">
-                <Link href="/" className="font-semibold text-lg mb-4 sm:mb-0">
-                  College Canteen
-                </Link>
-                <div className="flex gap-4 text-sm text-gray-600">
-                  {/* Footer Links */}
-                  <Link href="/about">
-                    <>About Us</>
-                  </Link>
-                  <Link href="/contact">
-                    <>Contact</>
-                  </Link>
-                </div>
-                <div className="text-sm text-gray-600 mt-4 sm:mt-0">
-                  &copy; {new Date().getFullYear()} College Canteen. All rights reserved.
-                </div>
-              </div>
-           </div>
-        </div>
-      </footer>
+      </div>
     </>
   );
 }

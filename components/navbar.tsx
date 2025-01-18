@@ -15,8 +15,13 @@ export function Navbar() {
   const isAdmin = pathname.startsWith("/admin");
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const { isAuthenticated, isAdminAuthenticated, isLoading , setIsAuthenticated , setIsAdminAuthenticated } = useAuth(); // Get loading state
-
+  const {
+    isAuthenticated,
+    isAdminAuthenticated,
+    isLoading,
+    setIsAuthenticated,
+    setIsAdminAuthenticated,
+  } = useAuth(); // Get loading state
 
   useEffect(() => {
     if (!isLoading && !isAdminAuthenticated && !isAuthenticated) {
@@ -25,12 +30,7 @@ export function Navbar() {
     }
   }, [isAdminAuthenticated, isAuthenticated, isLoading, router]);
 
-
-
   const closeDrawer = () => setIsOpen(false);
-
-
-
 
   return (
     <nav className="border-b">
@@ -38,7 +38,7 @@ export function Navbar() {
         <Link href="/" className="font-semibold text-xl" onClick={closeDrawer}>
           <div className="flex items-center gap-4">
             <Image
-              src="https://vignan.ac.in/newvignan/assets/images/Logo%20with%20Deemed.svg"
+            src={"https://images.shiksha.com/mediadata/images/1652957451phpTc4nIn.jpeg"}
               alt=""
               width={50}
               height={30}
@@ -103,19 +103,23 @@ export function Navbar() {
                   {/* Added onClick handler */}
                   <Button variant="ghost">out of stock</Button>
                 </Link>
-               {isAuthenticated ? <Button
-                  variant="ghost"
-                  onClick={() => {
-                    setIsAdminAuthenticated(false);
-                    setIsAuthenticated(false);
-                    closeDrawer();
-                    localStorage.removeItem("auth");
-                    router.push("/login");
-                  }}
-                  className="text-destructive bg-destructive-foreground hover:text-white"
-                >
-                  Sign Out
-                </Button> : <></>}
+                {isAuthenticated ? (
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setIsAdminAuthenticated(false);
+                      setIsAuthenticated(false);
+                      closeDrawer();
+                      localStorage.removeItem("auth");
+                      router.push("/login");
+                    }}
+                    className="text-destructive bg-destructive-foreground hover:text-white"
+                  >
+                    Sign Out
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </>
             ) : (
               <div className="text-[#424874] flex">
@@ -138,19 +142,23 @@ export function Navbar() {
                   <Button variant="ghost">CART</Button>
                 </Link>
 
-               {isAuthenticated ? <Button
-                  variant="ghost"
-                  onClick={() => {
-                    setIsAdminAuthenticated(false);
-                    setIsAuthenticated(false);
-                    closeDrawer();
-                    localStorage.removeItem("auth");
-                    router.push("/login");
-                  }}
-                  className="text-destructive"
-                >
-                  SIGN OUT
-                </Button> : <></>}
+                {isAuthenticated ? (
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      setIsAdminAuthenticated(false);
+                      setIsAuthenticated(false);
+                      closeDrawer();
+                      localStorage.removeItem("auth");
+                      router.push("/login");
+                    }}
+                    className="text-destructive"
+                  >
+                    SIGN OUT
+                  </Button>
+                ) : (
+                  <></>
+                )}
               </div>
             )}
           </div>
