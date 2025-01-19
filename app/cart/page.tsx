@@ -71,7 +71,7 @@ const page = () => {
                     >
                       <FaMinus />
                     </button>
-                    <span className="text-white font-medium">
+                    <span className="text-black font-medium">
                       {item.quantity}
                     </span>
                     <button
