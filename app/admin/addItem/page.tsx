@@ -1,4 +1,5 @@
 "use client";
+import { addItem } from "@/lib/api";
 import React, { useState } from "react";
 
 interface Item {
@@ -41,7 +42,7 @@ const AddItem: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setItems([...items, formData]);
     setFormData({
@@ -52,11 +53,17 @@ const AddItem: React.FC = () => {
       image: "",
       isAvailable: true,
     });
+    const response = await addItem(formData);
+    if (response?.status == 200) {
+      alert("Item added successfully");
+    } else {
+      alert("Failed to add item");
+    }
   };
 
   return (
     <div className=" text-white min-h-screen p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">
+      <h1 className="text-3xl font-bold mb-6 text-center text-black">
         Admin Item Management
       </h1>
       <div className="max-w-4xl mx-auto">

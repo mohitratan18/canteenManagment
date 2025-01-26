@@ -21,13 +21,15 @@ interface AuthContextType {
   bill: Bill | null;
   setBill: (bill: Bill | null) => void;
   addToBill: (item: BillItem) => void;
-  removeFromBill: (menuItemId: string)=>void;
+  removeFromBill: (menuItemId: string) => void;
   isAuthenticated: boolean;
   setIsAuthenticated: (value: boolean) => void;
   isAdminAuthenticated: boolean;
   setIsAdminAuthenticated: (value: boolean) => void;
-  isLoading:boolean;
+  isLoading: boolean;
   setIsLoading: (value: boolean) => void;
+  items: MenuItem[];
+  setItems: (items: MenuItem[]) => void;
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [bill, setBill] = useState<Bill | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [items, setItems] = useState<MenuItem[] | []>([]);
   const addToBill = (item: BillItem) => {
     setBill((prevBill) => {
       if (!prevBill) {
@@ -79,7 +82,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  
   const removeFromBill = (menuItemId: string) => {
     setBill((prevBill) => {
       if (!prevBill) {
@@ -104,17 +106,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    const auth = (localStorage.getItem("auth"));
+    const auth = localStorage.getItem("auth");
     if (auth?.trim()) {
-        setIsAuthenticated(true);
-        if (localStorage.getItem("role") === "ADMIN") {
-            setIsAdminAuthenticated(true);
-        }
+      setIsAuthenticated(true);
+      if (localStorage.getItem("role") === "ADMIN") {
+        setIsAdminAuthenticated(true);
+      }
     }
     setIsLoading(false); // Set loading to false after checking auth
 
-     // Redirect moved into Navbar component
-}, [isAdminAuthenticated, isAuthenticated, router]);
+    // Redirect moved into Navbar component
+  }, [isAdminAuthenticated, isAuthenticated, router]);
 
   const contextValue: AuthContextType = {
     isAuthenticated,
@@ -132,6 +134,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsAdminAuthenticated,
     isLoading,
     setIsLoading,
+    items,
+    setItems,
   };
 
   return (
