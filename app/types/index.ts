@@ -17,7 +17,7 @@ export interface Order {
     price: number;
   }[];
   total: number;
-  status: 'pending' | 'completed' | 'cancelled';
+  status: "pending" | "completed" | "cancelled";
   tokenNumber: string;
   createdAt: Date;
 }
@@ -26,7 +26,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'admin' | 'user' | 'faculty';
+  role: "admin" | "user" | "faculty";
 }
 
 export interface BillItem {
@@ -40,5 +40,12 @@ export interface Bill {
   id: string;
   items: BillItem[];
   total: number;
-  createdAt: Date; 
+  createdAt: Date;
+}
+export interface FeedBack {
+  id: string;
+  userId: string;
+  content: string;
+  rating: number;
+  improvement: string;
 }

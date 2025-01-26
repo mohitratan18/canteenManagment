@@ -9,8 +9,8 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "College Canteen Management System",
-  description: "Order food from your college canteen online",
+  title: "Vignan Annapurna Management System",
+  description: "Order food from your Vignan Annapurna online",
 };
 
 export default function RootLayout({

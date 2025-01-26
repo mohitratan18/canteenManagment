@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { MenuItem, Bill, BillItem } from "../types";
+import { MenuItem, Bill, BillItem, FeedBack } from "../types";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -30,6 +30,8 @@ interface AuthContextType {
   setIsLoading: (value: boolean) => void;
   items: MenuItem[];
   setItems: (items: MenuItem[]) => void;
+  feedBacks: FeedBack[];
+  setFeedBacks: (feedBacks: FeedBack[]) => void;
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -42,6 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [bill, setBill] = useState<Bill | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<MenuItem[] | []>([]);
+  const [feedBacks, setFeedBacks] = useState<FeedBack[] | []>([]);
   const addToBill = (item: BillItem) => {
     setBill((prevBill) => {
       if (!prevBill) {
@@ -136,6 +139,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading,
     items,
     setItems,
+    feedBacks,
+    setFeedBacks,
   };
 
   return (

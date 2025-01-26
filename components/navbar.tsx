@@ -38,13 +38,15 @@ export function Navbar() {
         <Link href="/" className="font-semibold text-xl" onClick={closeDrawer}>
           <div className="flex items-center gap-4">
             <Image
-            src={"https://images.shiksha.com/mediadata/images/1652957451phpTc4nIn.jpeg"}
+              src={
+                "https://images.shiksha.com/mediadata/images/1652957451phpTc4nIn.jpeg"
+              }
               alt=""
               width={50}
               height={30}
               className="md:w-[20] md:h-[50px]"
             />
-            <p className="font-bold text-2xl">College Canteen</p>
+            <p className="font-bold text-2xl">Vignan Annapurna</p>
           </div>
         </Link>
 
@@ -72,7 +74,7 @@ export function Navbar() {
 
           {/* Conditionally render content based on authentication status */}
           <div className="md:hidden text-[#424874] text-xl font-bold mb-4">
-            College Canteen
+            Vignan Annapurna
           </div>
 
           <div className="text-[#424874 flex flex-col md:flex-row gap-2 md:gap-4 ">
@@ -102,6 +104,11 @@ export function Navbar() {
                   {" "}
                   {/* Added onClick handler */}
                   <Button variant="ghost">out of stock</Button>
+                </Link>
+                <Link href="/admin/feedbacks" onClick={closeDrawer}>
+                  {" "}
+                  {/* Added onClick handler */}
+                  <Button variant="ghost">FeedBacks</Button>
                 </Link>
                 {isAuthenticated ? (
                   <Button
@@ -143,19 +150,26 @@ export function Navbar() {
                 </Link>
 
                 {isAuthenticated ? (
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      setIsAdminAuthenticated(false);
-                      setIsAuthenticated(false);
-                      closeDrawer();
-                      localStorage.removeItem("auth");
-                      router.push("/login");
-                    }}
-                    className="text-destructive"
-                  >
-                    SIGN OUT
-                  </Button>
+                  <div>
+                    <Link href="/feedback" onClick={closeDrawer}>
+                      {" "}
+                      {/* Added onClick handler */}
+                      <Button variant="ghost">FeedBack</Button>
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        setIsAdminAuthenticated(false);
+                        setIsAuthenticated(false);
+                        closeDrawer();
+                        localStorage.removeItem("auth");
+                        router.push("/login");
+                      }}
+                      className="text-destructive"
+                    >
+                      SIGN OUT
+                    </Button>
+                  </div>
                 ) : (
                   <></>
                 )}

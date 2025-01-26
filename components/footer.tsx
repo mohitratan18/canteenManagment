@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="container mx-auto"> {/* Inner container for content */}
           <div className="grid sm:flex sm:flex-row justify-between items-center">
             <Link href="/" className="font-semibold text-lg mb-4 sm:mb-0">
-              College Canteen
+              Vignan Annapurna
             </Link>
             <div className="flex gap-4 text-sm text-gray-600">
               {/* Footer Links */}
@@ -22,7 +22,7 @@ const Footer = () => {
               </Link>
             </div>
             <div className="text-sm text-gray-600 mt-4 sm:mt-0">
-              &copy; {new Date().getFullYear()} College Canteen. All rights reserved.
+              &copy; {new Date().getFullYear()} Vignan Annapurna. All rights reserved.
             </div>
           </div>
        </div>

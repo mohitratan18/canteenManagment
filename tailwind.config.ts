@@ -21,7 +21,8 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
-
+        starColor: "rgb(250 204 21 / var(--tw-text-opacity))",
+        grayTextColor:"rgb(156 163 175 / var(--tw-text-opacity))",
         background: "#F4EEFF", // Lightest color for background
         foreground: "#424874", // Darkest color for text and foreground elements
 
