@@ -14,11 +14,11 @@ const Footer = () => {
             </Link>
             <div className="flex gap-4 text-sm text-gray-600">
               {/* Footer Links */}
-              <Link href="/about">
-                <>About Us</>
+              <Link href="/ContactUs">
+                <>Contact Us</>
               </Link>
-              <Link href="/contact">
-                <>Contact</>
+              <Link href="/TermsandCondition">
+                <>Terms and Conditions</>
               </Link>
             </div>
             <div className="text-sm text-gray-600 mt-4 sm:mt-0">
