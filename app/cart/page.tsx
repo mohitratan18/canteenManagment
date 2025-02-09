@@ -1,12 +1,46 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import PaymentPage from "@/components/paymnet_gateway";
 
 const page = () => {
-  const { cartItems, setCartItems, isAuthenticated } = useAuth();
+  const { cartItems, setCartItems, isAuthenticated , isLoading , setIsLoading} = useAuth();
+  const [isSessionLoaded, setIsSessionLoaded] = useState(false);
+  const [sessionId, setSessionId] = useState("");
+
+
+  const getSession = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/create-payment/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ orderAmount: totalPrice }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json(); // Try to get more detailed error info
+        const errorMessage =
+          errorData.message ||
+          `Failed to create payment session (${res.status})`;
+        throw new Error(errorMessage);
+      }
+
+      const { paymentSessionId } = await res.json();
+      setIsSessionLoaded(true);
+      setSessionId(paymentSessionId);
+    } catch (error) {
+      console.log(error);
+    }
+    finally{
+      setIsLoading(false);
+    }
+  };
 
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -101,11 +135,29 @@ const page = () => {
               <div className="flex justify-end">
                 <p className="text-xl font-bold">Total: ₹{totalPrice}</p>
               </div>
-              <Button className="bg-destructive/90 text-white hover:text-black">
+              <Button
+                className="bg-destructive/90 text-white hover:text-black"
+                onClick={() => {
+                  getSession();
+                }}
+              >
                 Proceed To Pay
               </Button>
             </div>
           )}
+
+          <div>
+            {isSessionLoaded ? (
+              <>
+                <PaymentPage
+                  sessionId={sessionId}
+                  returnUrl="http://localhost:3000"
+                />
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       ) : (
         <div className="flex items-center justify-center">

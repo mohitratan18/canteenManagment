@@ -24,6 +24,8 @@ export default function MenuPage() {
     setItems,
   } = useAuth();
 
+  console.log(cartItems);
+  
   useEffect(() => {
     setIsLoading(true);
     if (!localStorage.getItem("auth")?.trim()) {
