@@ -22,8 +22,6 @@ export async function POST() {
   };
 
   try {
-    console.log("hello");
-
     const response = await fetch("https://sandbox.cashfree.com/pg/orders", {
       method: "POST",
       headers: {
