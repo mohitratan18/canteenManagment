@@ -163,6 +163,7 @@ export function Navbar() {
                         setIsAuthenticated(false);
                         closeDrawer();
                         localStorage.removeItem("auth");
+                        localStorage.clear();
                         router.push("/login");
                       }}
                       className="text-destructive"

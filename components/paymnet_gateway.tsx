@@ -58,11 +58,11 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ sessionId, returnUrl }) => {
   if (!isScriptLoaded) return <p>Loading...</p>; // Display loading state while script loads
 
   return (
-    <div className="container">
+    <div className="flex justify-center items-center flex-col mt-12 gap-4">
       <div className="row">
         <div className="col">
           <div className="row">
-            <h1>Demo of QR</h1>
+            <h1>Please scan the QR code to make payment</h1>
           </div>
         </div>
         <hr />
@@ -82,7 +82,7 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ sessionId, returnUrl }) => {
               <h5 className="card-title">
                 QR
                 <button
-                  className="btn btn-primary btn-sm float-right"
+                  className="btn btn-primary btn-sm float-right bg-blue-600 p-2 text-white rounded-md hover:bg-blue-500"
                   id="showqr"
                   type="button"
                 >
