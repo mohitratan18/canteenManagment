@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [cartItems, setCartItems] = useState<Item[] | []>([]);
+  const [cartItems, setCartItems] = useState<Item[] | []>(JSON.parse(localStorage.getItem("cart") ?? '[]'));
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [bill, setBill] = useState<Bill | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -120,6 +120,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Redirect moved into Navbar component
   }, [isAdminAuthenticated, isAuthenticated, router]);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const contextValue: AuthContextType = {
     isAuthenticated,
