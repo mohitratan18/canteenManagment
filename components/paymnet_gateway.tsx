@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface PaymentPageProps {
   sessionId: string;
@@ -12,8 +12,8 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ sessionId, returnUrl }) => {
 
   useEffect(() => {
     // Dynamically add the Cashfree script
-    const script = document.createElement('script');
-    script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js'; // Update to the correct Cashfree SDK URL
+    const script = document.createElement("script");
+    script.src = "https://sdk.cashfree.com/js/v3/cashfree.js"; // Update to the correct Cashfree SDK URL
     script.async = true;
     script.onload = () => setIsScriptLoaded(true);
     document.body.appendChild(script);
@@ -26,26 +26,29 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ sessionId, returnUrl }) => {
 
   useEffect(() => {
     if (isScriptLoaded) {
-      const paymentBtn = document.getElementById('showqr');
-      const paymentMessage = document.getElementById('paymentMessage');
-      const cashfree = Cashfree({ mode: 'sandbox' });
-      const qr = cashfree.create('upiQr', { values: { size: '220px' } });
-      qr.mount('#qr');
+      const paymentBtn = document.getElementById("showqr");
+      const paymentMessage = document.getElementById("paymentMessage");
+      const cashfree = (window as any).Cashfree({ mode: "sandbox" });
+      const qr = cashfree.create("upiQr", { values: { size: "220px" } });
+      qr.mount("#qr");
 
-      paymentBtn?.addEventListener('click', () => {
-        paymentMessage!.innerText = '';
-        paymentMessage!.classList.remove('alert-danger', 'alert-success');
+      paymentBtn?.addEventListener("click", () => {
+        paymentMessage!.innerText = "";
+        paymentMessage!.classList.remove("alert-danger", "alert-success");
 
         cashfree
           .pay({ paymentMethod: qr, paymentSessionId: sessionId, returnUrl })
-          .then((data) => {
+          .then((data: any) => {
+            const paymentBtn = document.getElementById(
+              "paymentBtn"
+            ) as HTMLButtonElement; // Or however you get the reference
             paymentBtn.disabled = false;
             if (data.error) {
               paymentMessage!.innerText = data.error.message;
-              paymentMessage!.classList.add('alert-danger');
+              paymentMessage!.classList.add("alert-danger");
             } else if (data.paymentDetails) {
               paymentMessage!.innerText = data.paymentDetails.paymentMessage;
-              paymentMessage!.classList.add('alert-success');
+              paymentMessage!.classList.add("alert-success");
             }
           });
       });
@@ -74,11 +77,15 @@ const PaymentPage: React.FC<PaymentPageProps> = ({ sessionId, returnUrl }) => {
           </div>
         </div>
         <div className="col col-lg-4 col-sm-10">
-          <div className="card" style={{ width: '18rem' }}>
+          <div className="card" style={{ width: "18rem" }}>
             <div className="card-body pb-0">
               <h5 className="card-title">
                 QR
-                <button className="btn btn-primary btn-sm float-right" id="showqr" type="button">
+                <button
+                  className="btn btn-primary btn-sm float-right"
+                  id="showqr"
+                  type="button"
+                >
                   Show QR
                 </button>
               </h5>
