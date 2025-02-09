@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { useRouter } from "next/navigation";
 import { MenuItem, Bill, BillItem, FeedBack } from "../types";
 
@@ -39,7 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [cartItems, setCartItems] = useState<Item[] | []>(JSON.parse(localStorage.getItem("cart") ?? '[]'));
+  const [cartItems, setCartItems] = useState<Item[] | []>([]);
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [bill, setBill] = useState<Bill | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -108,6 +114,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const updateCartItems = useCallback((newCartItems: Item[]) => {
+    setCartItems(newCartItems);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cart", JSON.stringify(newCartItems));
+    }
+  }, []);
+
   useEffect(() => {
     const auth = localStorage.getItem("auth");
     if (auth?.trim()) {
@@ -122,15 +135,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isAdminAuthenticated, isAuthenticated, router]);
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+    if (typeof window !== "undefined") {
+      const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        try {
+          const parsedCart = JSON.parse(storedCart);
+          setCartItems(parsedCart);
+        } catch (error) {
+          console.error("Error parsing cart from localStorage:", error);
+          // Handle the error appropriately, e.g., set an empty cart
+          setCartItems([]);
+        }
+      }
+    }
+  }, []);
 
   const contextValue: AuthContextType = {
     isAuthenticated,
     setIsAuthenticated,
     isAdmin,
     cartItems,
-    setCartItems,
+    setCartItems: updateCartItems,
     menuItems,
     setMenuItems,
     bill,
