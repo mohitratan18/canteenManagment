@@ -38,7 +38,7 @@ export interface BillItem {
 
 export interface Bill {
   id: string;
-  items?: BillItem[];
+  items: BillItem[];
   itemDescription: string;
   total: number;
   createdAt: Date;

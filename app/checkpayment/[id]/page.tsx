@@ -38,6 +38,7 @@ export default function Page({ params }: { params: Params }) {
             total: order_amount,
             id: uuidv4(),
             createdAt: new Date(Date.now()),
+            items:[]
           };
           try {
             const response = await addBill({
