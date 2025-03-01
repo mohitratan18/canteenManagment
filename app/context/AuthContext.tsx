@@ -38,6 +38,8 @@ interface AuthContextType {
   setItems: (items: MenuItem[]) => void;
   feedBacks: FeedBack[];
   setFeedBacks: (feedBacks: FeedBack[]) => void;
+  userBills : Bill[];
+  setUserBills: (userBills: Bill[]) => void;
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -51,7 +53,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState<MenuItem[] | []>([]);
   const [feedBacks, setFeedBacks] = useState<FeedBack[] | []>([]);
+  const [userBills, setUserBills] = useState<Bill[]>([]);  
+
+
   const addToBill = (item: BillItem) => {
+    // @ts-ignore
     setBill((prevBill) => {
       if (!prevBill) {
         return {
@@ -62,13 +68,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }; // Initialize bill
       }
 
-      const existingItemIndex = prevBill.items.findIndex(
+      // @ts-ignore
+      const existingItemIndex = prevBill?.items.findIndex(
         (billItem) => billItem.menuItemId === item.menuItemId
       );
 
       if (existingItemIndex > -1) {
         // If item exists, update quantity and total
-        const updatedItems = [...prevBill.items];
+        // @ts-ignore
+        const updatedItems = [...prevBill?.items];
         updatedItems[existingItemIndex] = {
           ...item,
           quantity:
@@ -81,6 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return { ...prevBill, items: updatedItems, total: updatedTotal };
       } else {
         // If item doesn't exist, add it to the bill
+        // @ts-ignore
         const updatedItems = [...prevBill.items, item];
         const updatedTotal = updatedItems.reduce(
           (acc, curr) => acc + curr.price * curr.quantity,
@@ -96,7 +105,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!prevBill) {
         return null; // Nothing to remove from
       }
-
+      
+      // @ts-ignore
       const updatedItems = prevBill.items.filter(
         (item) => item.menuItemId !== menuItemId
       );
@@ -170,6 +180,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setItems,
     feedBacks,
     setFeedBacks,
+    userBills,
+    setUserBills,
   };
 
   return (

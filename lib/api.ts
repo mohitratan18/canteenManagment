@@ -47,14 +47,12 @@ export const toggleAvailability = async (credentials: any) => {
   }
 };
 
-export const addItem = async(Credentials : any) => {
+export const addItem = async (Credentials: any) => {
   try {
     const response = await api.post("/admin/addNewItem", Credentials);
     return response;
-  } catch (error) {
-    
-  }
-}
+  } catch (error) {}
+};
 
 // Real-time items retrieval
 export const getItems = (callback: (items: any[]) => void) => {
@@ -67,4 +65,22 @@ export const getItems = (callback: (items: any[]) => void) => {
     callback(items);
   });
   return unsubscribe;
+};
+
+export const getBillsOfUser = async (credentials: any) => {
+  try {
+    const response = await api.post("/auth/getUserBills", credentials);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const addBill = async (credentials: any) => {
+  try {
+    const response = await api.post("/auth/addBill", credentials);
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
 };

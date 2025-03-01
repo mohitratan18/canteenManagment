@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -7,20 +7,36 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import PaymentPage from "@/components/paymnet_gateway";
 
 const page = () => {
-  const { cartItems, setCartItems, isAuthenticated , isLoading , setIsLoading} = useAuth();
+  const { cartItems, setCartItems, isAuthenticated, isLoading, setIsLoading} =
+    useAuth();
   const [isSessionLoaded, setIsSessionLoaded] = useState(false);
   const [sessionId, setSessionId] = useState("");
+  const [itemDescription, setItemDescription] = useState("");
+  const [totalAmount, setTotalAmount] = useState("");
+  const [orderId, setOrderId] = useState("");
 
+  
+  
+  
 
   const getSession = async () => {
     setIsLoading(true);
     try {
+      const orderItems = cartItems.map((item) => ({
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price, // Include price for server-side total verification
+      }));
+
       const res = await fetch("/api/create-payment/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ orderAmount: totalPrice }),
+        body: JSON.stringify({
+          orderAmount: totalPrice,
+          orderItems: orderItems, // Send item details
+        }),
       });
 
       if (!res.ok) {
@@ -31,13 +47,18 @@ const page = () => {
         throw new Error(errorMessage);
       }
 
-      const { paymentSessionId } = await res.json();
+      const { paymentSessionId, itemDescription, totalAmount, orderId } =
+        await res.json();
+      console.log(itemDescription);
+      setItemDescription(itemDescription);
+      localStorage.setItem("billitems", itemDescription);
+      setOrderId(orderId);
+      setTotalAmount(totalAmount);
       setIsSessionLoaded(true);
       setSessionId(paymentSessionId);
     } catch (error) {
       console.log(error);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -151,7 +172,7 @@ const page = () => {
               <>
                 <PaymentPage
                   sessionId={sessionId}
-                  returnUrl="http://localhost:3000"
+                  returnUrl={`http://localhost:3000/checkpayment/${orderId}`}
                 />
               </>
             ) : (

@@ -35,6 +35,8 @@ export default function LoginPage() {
         if (response.status == 200) {
           setIsAdminAuthenticated(true);
           localStorage.setItem("auth", response.data.token);
+          localStorage.setItem("email", response.data.email);
+          localStorage.setItem("role", "ADMIN");
           router.push("/admin");
         } else {
           alert(response.data.message);
@@ -45,7 +47,7 @@ export default function LoginPage() {
         if (response.status == 200) {
           setIsAuthenticated(true);
           localStorage.setItem("auth", response.data.token);
-          localStorage.setItem("role","ADMIN");
+          localStorage.setItem("email", response.data.email);
           router.push("/menu");
         } else {
           alert(response.data.message);
