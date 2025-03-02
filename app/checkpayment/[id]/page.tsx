@@ -6,7 +6,7 @@ import axios from "axios";
 import { Bill } from "../.././types/index";
 import { v4 as uuidv4 } from "uuid";
 import { Loader } from "@/components/ui/loader";
-import { addBill } from "@/lib/api";
+import { addBill, addBillToAdmin } from "@/lib/api";
 import { useAuth } from "@/app/context/AuthContext";
 
 interface Params {
@@ -38,7 +38,7 @@ export default function Page({ params }: { params: Params }) {
             total: order_amount,
             id: uuidv4(),
             createdAt: new Date(Date.now()),
-            items:[]
+            items: [],
           };
           try {
             const response = await addBill({
@@ -46,11 +46,16 @@ export default function Page({ params }: { params: Params }) {
               bill: bill,
             });
             if (response?.status === 200) {
-              setUserBills(response.data.bills);
-              alert('Order Placed Successfully');
-              localStorage.removeItem('cart');
-              localStorage.removeItem('billitems');
-              router.push('/orders');
+              // add bill to the admin bills
+              const res = await addBillToAdmin({ bill });
+
+              if (res?.status === 201) {
+                setUserBills(response.data.bills);
+                alert("Order Placed Successfully");
+                localStorage.removeItem("cart");
+                localStorage.removeItem("billitems");
+                router.push("/orders");
+              }
             } else {
               console.log(response);
               alert("error occureed");
