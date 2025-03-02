@@ -172,7 +172,7 @@ const page = () => {
               <>
                 <PaymentPage
                   sessionId={sessionId}
-                  returnUrl={`https://canteen-managment.vercel.app/orders/${orderId}`}
+                  returnUrl={`https://canteen-managment.vercel.app/checkpayment/${orderId}`}
                 />
               </>
             ) : (
