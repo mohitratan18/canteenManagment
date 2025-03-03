@@ -85,11 +85,18 @@ export const addBill = async (credentials: any) => {
   }
 };
 
-export const addBillToAdmin = async(credentials : any) => {
+export const addBillToAdmin = async (credentials: any) => {
   try {
-    const response = await api.post('/admin/addbills',credentials);
+    const response = await api.post("/admin/addbills", credentials);
+    return response;
+  } catch (error) {}
+};
+
+export const getAdminDashBoardDetails = async (credentials: any) => {
+  try {
+    const response = await api.get("/admin/getSales");
     return response;
   } catch (error) {
-    
+    console.log(error);
   }
-}
+};

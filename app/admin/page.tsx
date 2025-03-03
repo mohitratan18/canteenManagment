@@ -5,29 +5,42 @@ import { Card } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
-
+import { getAdminDashBoardDetails } from "@/lib/api";
 
 export default function AdminDashboard() {
-  const [todaySales] = useState(2450);
-  const [monthlySales] = useState(45670);
-  const [totalOrders] = useState(28);
-  const {isAdminAuthenticated} = useAuth();
+  const [todaySales, setTodaySales] = useState(0);
+  const [monthlySales, setMonthlySales] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [salesData, setSalesData] = useState([]);
+  const { isAdminAuthenticated, setIsAdminAuthenticated } = useAuth();
   const router = useRouter();
 
-  const salesData = [
-    { date: "1-10-2025", sales: "5200" },
-    { date: "1-11-2025", sales: "6700" },
-    { date: "1-12-2025", sales: "5200" },
-    { date: "1-13-2025", sales: "5200" },
-    { date: "1-14-2025", sales: "6700" },
-    { date: "1-15-2025", sales: "5200" },
-  ];
+
   useEffect(() => {
-    if(!localStorage.getItem("auth")?.trim() || !isAdminAuthenticated ){
-      router.push("/login");
+    localStorage.getItem("role") === "ADMIN" && setIsAdminAuthenticated(true);
+    if (!localStorage.getItem("auth")?.trim() || !isAdminAuthenticated) {
+      console.log(localStorage.getItem("auth"), " ", isAdminAuthenticated);
+      if (localStorage.getItem("role") !== "ADMIN") {
+        router.push("/login");
+      }
     }
-  }, [])
-  
+
+    try {
+      const getData = async () => {
+        const response = await getAdminDashBoardDetails({});
+        console.log(response);
+        setTodaySales(response?.data?.todaySales);
+        setTotalOrders(response?.data.totalOrders);
+        setSalesData(response?.data?.salesData);
+        setMonthlySales(response?.data?.monthlySales);
+      };
+
+      getData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     <div className="space-y-6 flex flex-col w-full items-center gap-6">
       <h1 className="text-3xl font-bold">Admin Dashboard</h1>
