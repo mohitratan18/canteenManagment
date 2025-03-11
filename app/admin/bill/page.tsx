@@ -94,7 +94,7 @@ export default function BillPage() {
                 <div className="flex items-center mb-3">
                   <Button
                     onClick={() => handleRemoveItem(item.menuItemId)}
-                    className="mt-4 w-full bg-danger hover:opacity-90 text-white"
+                    className="mt-4 w-full bg-destructive hover:opacity-90 text-white"
                   >
                     Remove
                   </Button>
@@ -112,8 +112,9 @@ export default function BillPage() {
 
       {bill && (
         <div className="border-t pt-4 mt-4">
-          <div className="flex justify-end">
+          <div className="flex justify-end items-center gap-4">
             <p className="text-xl font-bold">Total: ₹{bill.total}</p>
+            <Button className="bg-destructive text-white" onClick={()=>{setBill(null)}}>Done</Button>
           </div>
         </div>
       )}

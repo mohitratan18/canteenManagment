@@ -17,7 +17,8 @@ export interface Order {
     price: number;
   }[];
   total: number;
-  status: "pending" | "completed" | "cancelled";
+  itemDescription: string;
+  status: "pending" | "paid" | "cancelled";
   tokenNumber: string;
   createdAt: Date;
 }

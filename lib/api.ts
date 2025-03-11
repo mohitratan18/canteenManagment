@@ -100,3 +100,19 @@ export const getAdminDashBoardDetails = async (credentials: any) => {
     console.log(error);
   }
 };
+
+export const getAdminBills = async (credentials: any) => {
+  try {
+    const response = await api.get("/admin/getbills");
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const changeBillStatus = async (credentials: any) => {
+  try {
+    const response = await api.post("/admin/changeStatus", {id:credentials});
+    return response;
+  } catch (error) {}
+};

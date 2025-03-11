@@ -49,6 +49,10 @@ const config: Config = {
           foreground: "#424874",     
         },
 
+        danger:{
+          DEFAULT: "#FFC080",      // Use a color that works well with the new palette
+        },
+
         accent: {
           DEFAULT: "#8b5cf6",         // Purple accent
           foreground: "#ffffff",     // White text on accent
