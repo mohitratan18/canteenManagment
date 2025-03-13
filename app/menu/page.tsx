@@ -10,8 +10,18 @@ import { useAuth } from "../context/AuthContext";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Loader } from "@/components/ui/loader";
 import { getItems } from "@/lib/api";
+import startImage from "@/public/images/college1.jpg";
+
+interface Item {
+  id: string;
+  name: string;
+  quantity: number;
+  price: number;
+}
 
 export default function MenuPage() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [constItems, setConstItems] = useState<Item[] | []>([]);
   const router = useRouter();
   const {
     cartItems,
@@ -24,20 +34,34 @@ export default function MenuPage() {
     setItems,
   } = useAuth();
 
-  console.log(cartItems);
-  
+  const fetchItems = () => {
+    const unsubscribe = getItems((fetchedItems) => {
+      setItems(fetchedItems);
+      setConstItems(fetchedItems);
+      setIsLoading(false);
+    });
+    return () => unsubscribe();
+  };
+
   useEffect(() => {
     setIsLoading(true);
     if (!localStorage.getItem("auth")?.trim()) {
       router.push("/login");
     }
     setIsAuthenticated(true);
-    const unsubscribe = getItems((fetchedItems) => {
-      setItems(fetchedItems);
-      setIsLoading(false);
-    });
-    return () => unsubscribe();
+    fetchItems;
   }, []);
+
+  useEffect(() => {
+    if (searchTerm?.trim() === "") {
+      fetchItems();
+    } else {
+      const filteredItems = items.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setItems(filteredItems);
+    }
+  }, [searchTerm]);
 
   const handleAddItem = (id: string, name: string, price: number) => {
     const existingItem = cartItems.find((item) => item.id === id);
@@ -74,7 +98,13 @@ export default function MenuPage() {
   };
 
   const checkIfPresent = (id: string) => {
-    return cartItems.some((item) => item.id === id);
+    let flag = false;
+    cartItems.filter((item) => {
+      if (item.id === id) {
+        flag = true;
+      }
+    });
+    return flag;
   };
 
   if (isLoading) {
@@ -82,7 +112,50 @@ export default function MenuPage() {
   }
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Our Menu</h1>
+      <div className="relative">
+        <Image
+          src={startImage}
+          alt=""
+          className="bg-white h-[300px] rounded-md object-cover"
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <p className="text-white text-3xl font-bold drop-shadow-lg mt-12">
+            Dine at Vignan Canteen!
+          </p>
+        </div>
+      </div>
+      <p className="text-2xl font-bold font-mono  text-black text-center mt-4">
+        Feeling Hungry ! Don't Wait and get the Best food available{" "}
+      </p>
+      <h1 className="text-3xl font-bold pt-4">Our Menu</h1>
+
+      <div>
+        <div className="relative">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute top-1/2 left-3 -translate-y-1/2 h-5 w-5 text-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
+          <input
+            type="text"
+            className="bg-white w-full p-2 md:p-4 pl-8 md:pl-10 border border-1 border-card rounded-lg"
+            placeholder="Search the Items"
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+          />
+        </div>
+      </div>
+
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {items
           .filter((item) => item.isAvailable)
