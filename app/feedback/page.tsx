@@ -39,14 +39,14 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="text-white min-h-screen p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center text-black">
+    <div className="min-h-screen p-6">
+      <h1 className="text-3xl font-bold mb-6 text-center dark:text-white">
         Give us your Feedback
       </h1>
       <Card className="max-w-4xl mx-auto">
         <form className="p-6 rounded-lg mb-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
-            <label className="block text-sm mb-1" htmlFor="content">
+            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300" htmlFor="content">
               Your Feedback
             </label>
             <textarea
@@ -54,12 +54,12 @@ const FeedbackForm = () => {
               name="content"
               value={feedbackData.content}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-background text-black"
+              className="w-full p-2 rounded bg-background text-gray-900 dark:text-gray-100"
               rows={5}
               required
             />
 
-            <label className="block text-sm mb-1" htmlFor="improvement">
+            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300" htmlFor="improvement">
               Suggestions for Improvement
             </label>
             <textarea
@@ -67,10 +67,10 @@ const FeedbackForm = () => {
               name="improvement"
               value={feedbackData.improvement}
               onChange={handleChange}
-              className="w-full p-2 rounded bg-background text-black"
+              className="w-full p-2 rounded bg-background text-gray-900 dark:text-gray-100"
               rows={3}
             />
-            <label className="block text-sm mb-1" htmlFor="rating">
+            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300" htmlFor="rating">
               Rating (1-5)
             </label>
 

@@ -6,11 +6,18 @@ import { Card } from "@/components/ui/card";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import PaymentPage from "@/components/paymnet_gateway";
 
-const page = () => {
+interface PaymentSessionResponse {
+  paymentSessionId: string;
+  itemDescription: string;
+  totalAmount: string;
+  orderId: string;
+}
+
+const Page = () => {
   const { cartItems, setCartItems, isAuthenticated, isLoading, setIsLoading} =
     useAuth();
   const [isSessionLoaded, setIsSessionLoaded] = useState(false);
-  const [sessionId, setSessionId] = useState("");
+  const [sessionId, setSessionId] = React.useState("");
   const [itemDescription, setItemDescription] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [orderId, setOrderId] = useState("");
@@ -25,7 +32,7 @@ const page = () => {
       const orderItems = cartItems.map((item) => ({
         name: item.name,
         quantity: item.quantity,
-        price: item.price, // Include price for server-side total verification
+        price: item.price,
       }));
 
       const res = await fetch("/api/create-payment/", {
@@ -35,21 +42,21 @@ const page = () => {
         },
         body: JSON.stringify({
           orderAmount: totalPrice,
-          orderItems: orderItems, // Send item details
+          orderItems: orderItems,
         }),
       });
 
       if (!res.ok) {
-        const errorData = await res.json(); // Try to get more detailed error info
+        const errorData = await res.json() as { message?: string };
         const errorMessage =
           errorData.message ||
           `Failed to create payment session (${res.status})`;
         throw new Error(errorMessage);
       }
 
-      const { paymentSessionId, itemDescription, totalAmount, orderId } =
-        await res.json();
-      console.log(itemDescription);
+      const response = await res.json() as PaymentSessionResponse;
+      const { paymentSessionId, itemDescription, totalAmount, orderId } = response;
+      
       setItemDescription(itemDescription);
       localStorage.setItem("billitems", itemDescription);
       setOrderId(orderId);
@@ -57,7 +64,7 @@ const page = () => {
       setIsSessionLoaded(true);
       setSessionId(paymentSessionId);
     } catch (error) {
-      console.log(error);
+      console.error('Error creating payment session:', error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setIsLoading(false);
     }
@@ -95,10 +102,13 @@ const page = () => {
     <>
       {isAuthenticated ? (
         <div className="container mx-auto p-4">
-          <h1 className="text-3xl font-bold mb-4 text-[#191a29]">Your Cart</h1>
+          <h1 className="text-3xl font-bold mb-4 dark:text-white">Your Cart</h1>
 
           {cartItems.length === 0 ? (
-            <p className="text-[#191a29]">Your cart is empty.</p>
+            <div className="text-center py-8">
+              <p className="text-lg dark:text-gray-300">Your cart is empty</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">Add items from the menu to start your order</p>
+            </div>
           ) : (
             cartItems.map((item) => (
               <Card
@@ -115,7 +125,7 @@ const page = () => {
                   {" "}
                   {/* Added margin-top */}
                   <div>
-                    <p className="text-[#191a29]">Quantity:</p>
+                    <p className="text-gray-700 dark:text-gray-300">Quantity:</p>
                   </div>
                   <div className="flex items-center gap-2">
                     {" "}
@@ -137,13 +147,13 @@ const page = () => {
                     </button>
                   </div>
                 </div>
-                <p className="text-[#191a29]font-medium mt-2">
+                <p className="text-gray-700 dark:text-gray-300 font-medium mt-2">
                   {/* Added margin-top */}
                   Subtotal: ₹{item.quantity * item.price}
                 </p>
                 <Button
                   onClick={() => handleRemoveItem(item.id)}
-                  className="mt-4 w-full bg-danger hover:opacity-90 text-[#191a29] bg-accent text-accent-foreground"
+                  className="mt-4 w-full bg-destructive hover:bg-destructive/90 text-white"
                 >
                   Remove
                 </Button>
@@ -190,4 +200,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

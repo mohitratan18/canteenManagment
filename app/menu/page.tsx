@@ -124,8 +124,8 @@ export default function MenuPage() {
           </p>
         </div>
       </div>
-      <p className="text-2xl font-bold font-mono  text-black text-center mt-4">
-        Feeling Hungry ! Don't Wait and get the Best food available{" "}
+      <p className="text-2xl font-bold font-mono text-gray-900 dark:text-gray-100 text-center mt-4">
+        Feeling Hungry! Don&apos;t Wait and get the Best food available{" "}
       </p>
       <h1 className="text-3xl font-bold pt-4">Our Menu</h1>
 
@@ -182,22 +182,21 @@ export default function MenuPage() {
                   <div className="flex flex-col gap-2 items-center">
                     <div className="flex justify-center items-center gap-4">
                       <button
-                        className="bg-white text-black flex items-center justify-center w-12 h-10 rounded-md"
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex items-center justify-center w-12 h-10 rounded-md"
                         onClick={() => handleDecrementItem(item.id)}
                       >
                         <FaMinus />
                       </button>
                       <input
                         type="number"
-                        className="bg-white text-black text-center border border-1 border-black border-solid items-center justify-center w-12 h-10 rounded-lg no-spinners"
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-center border border-1 border-gray-300 dark:border-gray-600 items-center justify-center w-12 h-10 rounded-lg no-spinners"
                         value={
                           cartItems.find((cartItem) => cartItem.id === item.id)
                             ?.quantity || 0
                         }
-                      />{" "}
-                      {/* Display quantity */}
+                      />
                       <button
-                        className="bg-white text-black flex items-center justify-center w-12 h-10 rounded-md"
+                        className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex items-center justify-center w-12 h-10 rounded-md"
                         onClick={() => handleIncrementItem(item.id)}
                       >
                         <FaPlus />

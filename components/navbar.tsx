@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag, Menu, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import Image from "next/image";
@@ -33,8 +34,8 @@ export function Navbar() {
   const closeDrawer = () => setIsOpen(false);
 
   return (
-    <nav className="border-b">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between relative">
+    <nav className="border-b dark:border-gray-700 dark:bg-gray-900">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between relative dark:bg-gray-900 dark:text-white">
         <Link href="/" className="font-semibold text-xl" onClick={closeDrawer}>
           <div className="flex items-center gap-4">
             <Image
@@ -50,17 +51,20 @@ export function Navbar() {
           </div>
         </Link>
 
-        <button
-          className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle navigation menu"
-        >
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            className="md:hidden"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle navigation menu"
+          >
           {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
+        </div>
 
         <div
           className={cn(
-            "fixed md:static top-0 left-0 w-full h-full md:h-auto md:w-auto bg-[#F4EEFF] backdrop-blur-sm flex flex-col md:flex-row items-center justify-center md:items-start md:justify-start gap-4 p-4 md:p-0 z-50 transition-transform transform md:translate-x-0",
+            "fixed md:static top-0 left-0 w-full h-full md:h-auto md:w-auto bg-[#F4EEFF] dark:bg-gray-900 backdrop-blur-sm flex flex-col md:flex-row items-center justify-center md:items-start md:justify-start gap-4 p-4 md:p-0 z-50 transition-transform transform md:translate-x-0",
             isOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
@@ -73,11 +77,11 @@ export function Navbar() {
           </button>
 
           {/* Conditionally render content based on authentication status */}
-          <div className="md:hidden text-[#424874] text-xl font-bold mb-4">
+          <div className="md:hidden text-[#424874] dark:text-gray-200 text-xl font-bold mb-4">
             Vignan Annapurna
           </div>
 
-          <div className="text-[#424874 flex flex-col md:flex-row gap-2 md:gap-4 ">
+          <div className="text-[#424874] dark:text-gray-200 flex flex-col md:flex-row gap-2 md:gap-4">
             {isAdmin ? (
               <>
                 <Link href="/admin" onClick={closeDrawer}>
@@ -129,7 +133,7 @@ export function Navbar() {
                 )}
               </>
             ) : (
-              <div className="text-[#424874] flex">
+              <div className="text-[#424874] dark:text-gray-200 flex">
                 <Link href="/menu" onClick={closeDrawer}>
                   {" "}
                   {/* Added onClick handler */}
