@@ -7,6 +7,10 @@ const API_BASE_URL =
 
 const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 //user login
@@ -112,7 +116,7 @@ export const getAdminBills = async (credentials: any) => {
 
 export const changeBillStatus = async (credentials: any) => {
   try {
-    const response = await api.post("/admin/changeStatus", {id:credentials});
+    const response = await api.post("/admin/changeStatus", { id: credentials });
     return response;
   } catch (error) {}
 };
