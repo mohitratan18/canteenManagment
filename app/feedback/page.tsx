@@ -3,8 +3,12 @@ import { useState } from "react";
 import { FeedBack } from "@/app/types";
 import { Card } from "@/components/ui/card";
 import StarRating from "@/app/components/StarRating";
+import { useToast } from "@/hooks/use-toast";
+import { v4 as uuidv4 } from 'uuid';
+import { feedbackPost } from "@/lib/api";
 
 const FeedbackForm = () => {
+  const { toast } = useToast();
   const [feedbackData, setFeedbackData] = useState<FeedBack>({
     id: "",
     userId: "",
@@ -26,16 +30,44 @@ const FeedbackForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would make an API call to submit the feedbackData
-    console.log("Feedback submitted:", feedbackData);
-    // Reset the form after submission (optional)
-    setFeedbackData({
-      id: "",
-      userId: "",
-      content: "",
-      rating: 0,
-      improvement: "",
-    });
+    
+    try {
+
+      const response = await feedbackPost({
+        id: feedbackData.id,
+        userId: uuidv4(),
+        content: feedbackData.content,
+        rating: feedbackData.rating,
+        improvement: feedbackData.improvement,
+
+      });
+
+      if (response?.status === 201) {
+        toast({
+          title: "Success",
+          description: "Thank you for your feedback!",
+          duration: 3000,
+        });
+
+        // Reset form
+        setFeedbackData({
+          id: "",
+          userId: "",
+          content: "",
+          rating: 0,
+          improvement: "",
+        });
+      } else {
+        throw new Error('Failed to submit feedback');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit feedback. Please try again.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
   };
 
   return (

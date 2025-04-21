@@ -25,7 +25,7 @@ export default function OrdersPage() {
         <div className="space-y-6">
           <h1 className="text-3xl font-bold">Your Orders</h1>
           <div className="space-y-4">
-            {userBills.map((order) => (
+            {userBills.length > 0 ? userBills.map((order) => (
               <Card key={order.id} className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
@@ -48,7 +48,7 @@ export default function OrdersPage() {
                   <span className="font-semibold">₹{order.total}</span>
                 </div>
               </Card>
-            ))}
+            )) : <>No orders Placed</>}
           </div>
         </div>
       ) : (

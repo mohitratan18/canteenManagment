@@ -1,72 +1,25 @@
 "use client";
 import { useAuth } from "@/app/context/AuthContext";
-import { FeedBack } from "@/app/types";
 import { Card } from "@/components/ui/card";
 import React, { useEffect } from "react";
+import { getFeedbacks } from "@/lib/api";
 
-const feedbackData: FeedBack[] = [
-  {
-    id: "1",
-    userId: "u101",
-    content: "Great service, really enjoyed the experience!",
-    rating: 5,
-    improvement:
-      "Keep up the good work and maintain the same level of quality.",
-  },
-  {
-    id: "2",
-    userId: "u102",
-    content: "The product quality was good, but delivery was delayed.",
-    rating: 4,
-    improvement:
-      "Improve the delivery timelines to enhance the overall experience.",
-  },
-  {
-    id: "3",
-    userId: "u103",
-    content: "Not satisfied with the customer support. Needs improvement.",
-    rating: 2,
-    improvement:
-      "Focus on training the customer support team to be more responsive and helpful.",
-  },
-  {
-    id: "4",
-    userId: "u104",
-    content: "Decent experience overall, but some features were buggy.",
-    rating: 3,
-    improvement:
-      "Conduct thorough testing to eliminate bugs and improve feature reliability.",
-  },
-  {
-    id: "5",
-    userId: "u105",
-    content: "Absolutely fantastic! Highly recommend this to everyone.",
-    rating: 5,
-    improvement:
-      "Consider adding more features to surprise and delight your customers.",
-  },
-  {
-    id: "6",
-    userId: "u106",
-    content: "It was okay, but I expected more from the premium plan.",
-    rating: 3,
-    improvement: "Enhance the premium plan with additional exclusive benefits.",
-  },
-  {
-    id: "7",
-    userId: "u107",
-    content: "Terrible experience. Won't be coming back.",
-    rating: 1,
-    improvement:
-      "Address major pain points, such as product quality or service consistency, to regain trust.",
-  },
-];
-
-const feedBack = () => {
+const FeedBack = () => {
   const { feedBacks, setFeedBacks } = useAuth();
 
   useEffect(() => {
-    setFeedBacks(feedbackData);
+    const fetchFeedbacks = async () => {
+      try {
+        const response = await getFeedbacks();
+        if (response?.data) {
+          setFeedBacks(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching feedbacks:", error);
+      }
+    };
+
+    fetchFeedbacks();
   }, []);
 
   const renderStars = (rating: number) => {
@@ -94,9 +47,7 @@ const feedBack = () => {
       {feedBacks.map((feedBack) => {
         return (
           <div key={feedBack.id}>
-            {" "}
-            {/* Added key prop */}
-            <Card className="p-4 mb-2 hover:scale-0 ">
+            <Card className="p-4 mb-2 transition-all duration-300 hover:shadow-lg hover:transform hover:scale-[1.02] hover:bg-gray-50 dark:hover:bg-gray-800">
               <p>
                 <span className="text-black font-semibold text-lg lg:text-xl">
                   UserID
@@ -127,4 +78,4 @@ const feedBack = () => {
   );
 };
 
-export default feedBack;
+export default FeedBack;

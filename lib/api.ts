@@ -116,3 +116,19 @@ export const changeBillStatus = async (credentials: any) => {
     return response;
   } catch (error) {}
 };
+
+export const getFeedbacks = async () => {
+  try {
+    const response = await api.get("/admin/feedback");
+    return response;
+  } catch (error) {
+    console.error("Error fetching feedbacks:", error);
+  }
+};
+
+export const feedbackPost = async (credentials: any) => {
+  try {
+    const response = await api.post("/admin/feedback", credentials);
+    return response;
+  } catch (error) {}
+};
