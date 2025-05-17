@@ -120,7 +120,7 @@ export default function MenuPage() {
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-white text-3xl font-bold drop-shadow-lg mt-12">
-            Dine at Vignan Canteen!
+            Dine at { process.env.CLIENT} Canteen!
           </p>
         </div>
       </div>

@@ -78,7 +78,7 @@ export function Navbar() {
 
           {/* Conditionally render content based on authentication status */}
           <div className="md:hidden text-[#424874] dark:text-gray-200 text-xl font-bold mb-4">
-            Vignan Annapurna
+            {process.env.CANTEEN_NAME}
           </div>
 
           <div className="text-[#424874] dark:text-gray-200 flex flex-col md:flex-row gap-2 md:gap-4">
